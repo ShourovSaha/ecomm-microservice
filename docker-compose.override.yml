@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+    ss_mongoDb: 
+         container_name: ss_mongoDb
+         restart: always
+         ports:
+            - 27017:27017
+         volumes:
+            - ss_mongoDb_data:/data/db 
+
+    catalog.api:
+         environment:
+              - ASPNETCORE_ENVIRONMENT=Development
+              - "CatalogDbSettings:ConnectionStr=mongodb://ss_mongoDb:27017"
+         depends_on: 
+              - ss_mongoDb
+         ports:
+              - "8000:80"
+
+volumes:
+     ss_mongoDb_data:
+            external: true
+     
